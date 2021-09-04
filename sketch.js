@@ -272,12 +272,12 @@ function keyPressed() {
     eightBits = [false,false,false,false,false,false,false,false];
   }
 
-  // if(key == '6') {
-  //   nextThing();
-  // }
-  // if(key == '9') {
-  //   state = "gameOver";
-  // }
+  if(key == '6') {
+    nextThing();
+  }
+  if(key == '9') {
+    state = "gameOver";
+  }
   
 
   // if(keyCode == ENTER) {
