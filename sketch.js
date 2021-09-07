@@ -94,7 +94,12 @@ function button(x, y, w, h, newState, words) {
   fill(255);
   if(mouseIsIn(x, y, w, h)) {
     fill(150);
-    if(mouseDown) state = newState;
+    if(mouseDown) {
+      state = newState;
+      mouseDown = false;
+      if(newState == "menu") initialize();
+    }
+    
   }
   push();
   rectMode(CENTER);
@@ -123,6 +128,8 @@ function drawTutorial() {
 
 function runGame() {
   background(0);
+  
+  checkForClick();
 
   drawBits();
   
@@ -242,6 +249,8 @@ function gameOver() {
 
   fill(255);
   button(width/2, 2*height/3, 100, 50, "reset", "restart");
+  fill(255);
+  button(width/2, 2*height/3+60, 200, 50, "menu", "back to menu");
 
 }
   
@@ -272,17 +281,27 @@ function keyPressed() {
     eightBits = [false,false,false,false,false,false,false,false];
   }
 
-  if(key == '6') {
-    nextThing();
-  }
-  if(key == '9') {
-    state = "gameOver";
-  }
+  // if(key == '6') {
+  //   nextThing();
+  // }
+  // if(key == '9') {
+  //   state = "gameOver";
+  // }
   
 
   // if(keyCode == ENTER) {
     check(); 
   // }
+}
+
+function checkForClick() {
+  if(!mouseDown) return;
+  if(mouseY > height-spacing) {
+    let pos = floor(map(mouseX, 0,width,0,8));
+    eightBits[pos] = !eightBits[pos];
+    mouseDown = false;
+    check();
+  }
 }
 
 function mousePressed() {
