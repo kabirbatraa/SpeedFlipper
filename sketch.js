@@ -156,7 +156,7 @@ function runGame() {
 
   textSize(20);
   fill(255);
-  text("Highscore: 18", width - 75, spacing/3);
+  text("Highscore: 20", width - 75, spacing/3);
 }
 
 function drawBits() {
