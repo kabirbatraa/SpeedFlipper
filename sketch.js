@@ -196,7 +196,7 @@ function drawHealth() {
 }
 
 function randomHexGenerator() {
-  var num = floor(random() * 256);
+  var num = floor(random() * 255)+1;
   // console.log(num);
   // console.log(floor(num/16).toString(16).toUpperCase());
   // console.log((num % 16).toString(16).toUpperCase());
