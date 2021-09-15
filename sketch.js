@@ -133,6 +133,8 @@ function runGame() {
 
   drawBits();
   
+  // if(!(currentHex.includes("B") && currentHex.includes("D"))) nextThing();
+
   // draw the hex
   fill("blue");
   textSize(100);
@@ -156,7 +158,7 @@ function runGame() {
 
   textSize(20);
   fill(255);
-  text("Highscore: 20", width - 75, spacing/3);
+  text("Highscore: 22", width - 75, spacing/3);
 }
 
 function drawBits() {
@@ -265,7 +267,7 @@ function keyPressed() {
   if(state == "game") {
 
     for(var i = 0; i < keys.length; i++) {
-      if(key == keys[i]) {
+      if(key.toLowerCase() == keys[i]) {
         eightBits[i] = !eightBits[i];
       }
     }
