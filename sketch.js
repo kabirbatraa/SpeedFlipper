@@ -1,38 +1,26 @@
 
-var eightBits;
-var keys;
-var currentHex;
-var spacing;
 
-var score;
-var health;
-
-var lossHealthRate;
-
-var state;
-
-var scoreColor;
-
+// state variables
+var windowState;
+var funMode;
+var numBits;
 var mouseDown;
 
+// in game variables
+var currentBits;
+var currentHex;
+var score;
+var health;
+var lossHealthRate;
+
+// visuals
+var scoreColor;
+var spacing;
 var dimmed;
 
-var funMode;
-
-var numBits;
-
+// constants
+var keys;
 var labels;
-
-// let paper;
-// let zcool;
-// function preload() {
-  // myFont = loadFont('assets/PAPYRUS.TTF');
-  // myFont = loadFont('assets/ZCOOLKuaiLe-Regular.ttf');
-// }
-// let table;
-// function preload() {
-//   table = loadImage('table.png');
-// }
 
 function setup() {
   createCanvas(500,500);
@@ -43,7 +31,7 @@ function setup() {
   keys = "asdfjkl;";
   labels = ["80","40","20","10","08","04","02","01"];
   spacing = (width / 8);
-  state = "menu"; // menu, game, gameOver, reset, tutorial, hexTable
+  windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable
   initialize();
   // textFont(paper);
   // textFont(zcool);
@@ -52,7 +40,7 @@ function setup() {
 }
 
 function initialize() {
-  eightBits = [false,false,false,false,false,false,false,false];
+  currentBits = [false,false,false,false,false,false,false,false];
   numBits = 2;
   currentHex = generateHexBit(numBits);
   score = 0;
@@ -67,27 +55,27 @@ function initialize() {
 
 
 function draw() {
-  if (state == "menu") {
+  if (windowState == "menu") {
     drawMenu();
   }
-  else if(state == "game") {
+  else if(windowState == "game") {
     runGame();
   }
 
-  else if(state == "gameOver") {
+  else if(windowState == "gameOver") {
     gameOver();
   }
 
-  else if(state == "reset") {
+  else if(windowState == "reset") {
     initialize();
-    state = "game";
+    windowState = "game";
   }
 
-  else if (state == "tutorial") {
+  else if (windowState == "tutorial") {
     drawTutorial();
   }
   
-  else if (state == "hexTable") {
+  else if (windowState == "hexTable") {
     drawHexTable();
   }
 
@@ -113,7 +101,7 @@ function button(x, y, w, h, newState, words) {
   if(mouseIsIn(x, y, w, h)) {
     fill(150);
     if(mouseDown) {
-      state = newState;
+      windowState = newState;
       mouseDown = false;
       if(newState == "menu") initialize();
     }
@@ -193,7 +181,7 @@ function runGame() {
   if(health > 0) health -= lossHealthRate;
   if(health <= 0) {
     health = 0;
-    state = "gameOver";
+    windowState = "gameOver";
   }
   drawHealth();
 
@@ -212,7 +200,7 @@ function drawBits() {
     text(labels[i], i * spacing+spacing/2, height - spacing+spacing/2 - 50);
     // rect(i * spacing+spacing/2,height - spacing+spacing/2-100,5,5);
 
-    if(eightBits[i]) {
+    if(currentBits[i]) {
       fill(255);
       rect(i * spacing, height - spacing, spacing, spacing, 20);
       fill(0);
@@ -262,7 +250,7 @@ function generateHexBit(bits) {
 function readBits() {
   var total = 0;
   for(var i = 0; i < 8; i++) {
-    if(eightBits[i]) total += 1 << (7 - i);
+    if(currentBits[i]) total += 1 << (7 - i);
   }
   total = total.toString(16).toUpperCase();
   if(total.length == 1) total = "0" + total;
@@ -278,7 +266,7 @@ function check() {
 
 function nextThing() {
   currentHex = generateHexBit(numBits);
-  eightBits = [false,false,false,false,false,false,false,false];
+  currentBits = [false,false,false,false,false,false,false,false];
   score += 1;
   health = 100;
   if(lossHealthRate < 1) lossHealthRate += 0.05;
@@ -315,23 +303,23 @@ function mouseIsIn(x,y,w,h) {
 
 
 function keyPressed() {
-  if(state == "game") {
+  if(windowState == "game") {
 
     for(var i = 0; i < keys.length; i++) {
       if(key.toLowerCase() == keys[i]) {
-        eightBits[i] = !eightBits[i];
+        currentBits[i] = !currentBits[i];
       }
     }
 
   }
-  else if(state == "gameOver") {
+  else if(windowState == "gameOver") {
     if(key == 'r') {
-      state = "reset";
+      windowState = "reset";
     }
   }
 
   if(keyCode == BACKSPACE) {
-    eightBits = [false,false,false,false,false,false,false,false];
+    currentBits = [false,false,false,false,false,false,false,false];
   }
 
   // if(key == '6') {
@@ -351,7 +339,7 @@ function checkForClick() {
   if(!mouseDown) return;
   if(mouseY > height-spacing) {
     let pos = floor(map(mouseX, 0,width,0,8));
-    eightBits[pos] = !eightBits[pos];
+    currentBits[pos] = !currentBits[pos];
     mouseDown = false;
     check();
   }
