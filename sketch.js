@@ -21,11 +21,17 @@ var funMode;
 
 var numBits;
 
+var labels;
+
 // let paper;
 // let zcool;
 // function preload() {
   // myFont = loadFont('assets/PAPYRUS.TTF');
   // myFont = loadFont('assets/ZCOOLKuaiLe-Regular.ttf');
+// }
+// let table;
+// function preload() {
+//   table = loadImage('table.png');
 // }
 
 function setup() {
@@ -35,6 +41,7 @@ function setup() {
   textAlign(CENTER,CENTER);
   
   keys = "asdfjkl;";
+  labels = ["80","40","20","10","08","04","02","01"];
   spacing = (width / 8);
   state = "menu"; // menu, game, gameOver, reset, tutorial, hexTable
   initialize();
@@ -61,7 +68,7 @@ function initialize() {
 
 function draw() {
   if (state == "menu") {
-    displayMenu();
+    drawMenu();
   }
   else if(state == "game") {
     runGame();
@@ -79,10 +86,14 @@ function draw() {
   else if (state == "tutorial") {
     drawTutorial();
   }
+  
+  else if (state == "hexTable") {
+    drawHexTable();
+  }
 
 }
 
-function displayMenu() {
+function drawMenu() {
   background(0);
   fill(255);
   textSize(50);
@@ -90,9 +101,10 @@ function displayMenu() {
   textSize(20);
   text("by Kabir Batra", width/2, height/3 +50);
 
-  button(width/2, 2*height/3, 100, 50, "game", "start");
+  button(width/2, 2*height/3, 120, 50, "game", "Start");
   
-  button(width/2, 2*height/3+60, 100, 50, "tutorial", "tutorial");
+  button(width/2, 2*height/3+60, 120, 50, "tutorial", "Tutorial");
+  button(width/2, 2*height/3+60+60, 120, 50, "hexTable", "Hex Table");
 
 }
 
@@ -122,14 +134,36 @@ function drawTutorial() {
   button(width/2, height/5, 250, 50, "menu", "back to menu");
   fill(255);
   var tutorialText = "1. Read the hexadecimal number (in blue)\n\n"
-    + "2. Flip the binary bits to match them\n"
-    + "up with the hexadecimal number\n\n"
-    + "3. Repeat\n\n"
-    + "4. Your score is the number of rounds\n"
-    + "you can pass without running out of health";
+    + "2. Convert the number into binary\n\n"
+    + "3. Flip the bits at the bottom \n"
+    + "to match the binary number\n\n"
+    + "4. Get past as many rounds as possible!\n";
   text(tutorialText, width/2, height/2+50);
 
 
+}
+
+function drawHexTable() {
+  background(0);
+  button(width/2, height/6, 250, 50, "menu", "back to menu");
+  fill(255);
+
+  push();
+  textAlign(LEFT,CENTER);
+  rectMode(CENTER);
+  // rect(width/2, height/2, 3, 300);
+  // rect(width/2, height/2, 400, 3);
+  textSize(15);
+  text('hex', width/2 - 2*spacing, height/4+10);
+  text('binary', width/2 + spacing, height/4+10);
+
+  for(var i = 0; i < 16; i++) {
+    text(i.toString(16).toUpperCase(), width/2 - 2*spacing, height/4+10+(i+1)*20);
+    text(i.toString(2), width/2 + spacing, height/4+10+(i+1)*20);
+  }
+
+  // image(table, width/2, height/2);
+  pop();
 }
 
 function runGame() {
@@ -173,6 +207,10 @@ function drawBits() {
   for(var i = 0; i < 8; i++) {
     push()
     stroke("white");
+
+    fill(255);
+    text(labels[i], i * spacing+spacing/2, height - spacing+spacing/2 - 50);
+    // rect(i * spacing+spacing/2,height - spacing+spacing/2-100,5,5);
 
     if(eightBits[i]) {
       fill(255);
