@@ -13,6 +13,7 @@ function drawMenu() {
   button(width/2, 2*height/3+60, 120, 50, "tutorial", "Tutorial");
   button(width/2, 2*height/3+60+60, 120, 50, "hexTable", "Hex Table");
 
+  button(width - spacing, spacing, 100, 50, "settings","Settings")
 }
 
 
@@ -21,13 +22,16 @@ function drawTutorial() {
   background(0);
   button(width/2, height/5, 250, 50, "menu", "back to menu");
   fill(255);
+  textSize(20);
+  push();
+  textAlign(LEFT,CENTER);
   var tutorialText = "1. Read the hexadecimal number (in blue)\n\n"
     + "2. Convert the number into binary\n\n"
     + "3. Flip the bits at the bottom \n"
     + "to match the binary number\n\n"
     + "4. Get past as many rounds as possible!\n";
-  text(tutorialText, width/2, height/2+50);
-
+  text(tutorialText, spacing, height/2+50);
+  pop();
 
 }
 
@@ -56,6 +60,30 @@ function drawHexTable() {
   pop();
 }
 
+
+function drawSettings() {
+  background(0);
+  fill(255);
+  textSize(40);
+  text("Settings", width/2, height/6);
+
+  button(width/2, 5*height/6, 250, 50, "menu", "back to menu");
+
+  textSize(20);
+  if(gameMode == "normal") {
+    if (button(width/2, 2*height/3, 300, 50, "settings", "Switch To Easy Mode")) {
+      gameMode = "easy";
+    }
+  }
+  else if(gameMode == "easy") {
+    if (button(width/2, 2*height/3, 300, 50, "settings", "Switch To Normal Mode")) {
+      gameMode = "normal";
+    }
+  }
+
+  
+
+}
 
 
 function gameOver() {

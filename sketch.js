@@ -2,7 +2,7 @@
 
 // state variables
 var windowState;
-var funMode;
+var gameMode;
 var numBits;
 var mouseDown;
 
@@ -19,7 +19,8 @@ var spacing;
 var dimmed;
 
 // constants
-var keys;
+var eightBitHotkeys;
+var fourBitHotkeys;
 var labels;
 
 function setup() {
@@ -28,20 +29,27 @@ function setup() {
   fill(0);
   textAlign(CENTER,CENTER);
   
-  keys = "asdfjkl;";
+  eightBitHotkeys = "asdfjkl;";
+  fourBitHotkeys = "  fghj";
   labels = ["80","40","20","10","08","04","02","01"];
   spacing = (width / 8);
-  windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable
+  windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable, settings
+  gameMode = "normal";
   initialize();
-  // textFont(paper);
-  // textFont(zcool);
+
   textFont('Trebuchet MS');
 
 }
 
 function initialize() {
   currentBits = [false,false,false,false,false,false,false,false];
-  numBits = 2;
+  if(gameMode == "normal") {
+    numBits = 2;
+  }
+  else if (gameMode == "easy") {
+    numBits = 1;
+  }
+
   currentHex = generateHexBit(numBits);
   score = 0;
   health = 100;
@@ -49,9 +57,7 @@ function initialize() {
   scoreColor = "white";
   mouseDown = false;
   dimmed = false;
-  funMode = false;
 }
-
 
 
 function draw() {
@@ -79,9 +85,11 @@ function draw() {
     drawHexTable();
   }
 
+  else if (windowState == "settings") {
+    drawSettings();
+  }
+
 }
-
-
 
 function button(x, y, w, h, newState, words) {
   fill(255);
@@ -91,6 +99,7 @@ function button(x, y, w, h, newState, words) {
       windowState = newState;
       mouseDown = false;
       if(newState == "menu") initialize();
+      return true;
     }
     
   }
@@ -102,6 +111,7 @@ function button(x, y, w, h, newState, words) {
   fill(0);
   textSize(25);
   text(words,x, y);
+  return false;
 }
 
 function runGame() {
@@ -109,10 +119,13 @@ function runGame() {
   
   checkForClick();
 
-  drawBits();
+  if(gameMode == "normal")
+    drawEightBits();
+  else if(gameMode == "easy")
+    drawFourBits();
   
-  if(funMode)
-    if(!(currentHex.includes("B") || currentHex.includes("D"))) nextRound();
+  // if(gameMode == "funMode")
+  //   if(!(currentHex.includes("B") || currentHex.includes("D"))) nextRound();
 
   // draw the hex
   fill("blue");
@@ -140,10 +153,11 @@ function runGame() {
   text("Highscore: 24", width - 75, spacing/3);
 }
 
-function drawBits() {
+function drawEightBits() {
   rectMode(CORNER);
+  push()
   for(var i = 0; i < 8; i++) {
-    push()
+    
     stroke("white");
 
     fill(255);
@@ -154,17 +168,50 @@ function drawBits() {
       fill(255);
       rect(i * spacing, height - spacing, spacing, spacing, 20);
       fill(0);
-      text(keys[i], i * spacing+spacing/2, height - spacing+spacing/2);
+      text(eightBitHotkeys[i], i * spacing+spacing/2, height - spacing+spacing/2);
     } 
     else {
       fill(0);
       rect(i * spacing, height - spacing, spacing, spacing, 20);
       fill(255);
-      text(keys[i], i * spacing+spacing/2, height - spacing+spacing/2);
+      text(eightBitHotkeys[i], i * spacing+spacing/2, height - spacing+spacing/2);
     }
-    pop();
+    
   }
-  var bits = readBits();
+  pop();
+  var bits = readEightBits();
+  fill(255);
+  textSize(50);
+  text(bits, width - spacing, height - 2*spacing);
+}
+
+function drawFourBits() {
+  rectMode(CORNER);
+  push()
+  for(var i = 2; i < 6; i++) {
+    
+    stroke("white");
+
+    fill(255);
+    text(labels[i+2][1], i * spacing+spacing/2, height - spacing+spacing/2 - 50);
+    // rect(i * spacing+spacing/2,height - spacing+spacing/2-100,5,5);
+
+    if(currentBits[i]) {
+      fill(255);
+      rect(i * spacing, height - spacing, spacing, spacing, 20);
+      fill(0);
+      text(fourBitHotkeys[i], i * spacing+spacing/2, height - spacing+spacing/2);
+    } 
+    else {
+      fill(0);
+      rect(i * spacing, height - spacing, spacing, spacing, 20);
+      fill(255);
+      text(fourBitHotkeys[i], i * spacing+spacing/2, height - spacing+spacing/2);
+    }
+    
+  }
+  pop();
+  var bits = readFourBits();
   fill(255);
   textSize(50);
   text(bits, width - spacing, height - 2*spacing);
@@ -197,7 +244,7 @@ function generateHexBit(bits) {
   
 }
 
-function readBits() {
+function readEightBits() {
   var total = 0;
   for(var i = 0; i < 8; i++) {
     if(currentBits[i]) total += 1 << (7 - i);
@@ -207,10 +254,21 @@ function readBits() {
   return total;
 }
 
+function readFourBits() {
+  var total = 0;
+  for(var i = 2; i < 6; i++) {
+    if(currentBits[i]) total += 1 << (3 - (i-2));
+  }
+  total = total.toString(16).toUpperCase();
+  // if(total.length == 1) total = "0" + total;
+  return total;
+}
+
 function check() {
-  if(readBits() == currentHex) {
+  
+  if((gameMode == "normal" && readEightBits() == currentHex) 
+      || (gameMode == "easy" && readFourBits() == currentHex)) {
     nextRound();
-    
   }
 }
 
@@ -236,11 +294,22 @@ function mouseIsIn(x,y,w,h) {
 function keyPressed() {
   if(windowState == "game") {
 
-    for(var i = 0; i < keys.length; i++) {
-      if(key.toLowerCase() == keys[i]) {
-        currentBits[i] = !currentBits[i];
+    if(gameMode == "normal") {
+      for(var i = 0; i < eightBitHotkeys.length; i++) {
+        if(key.toLowerCase() == eightBitHotkeys[i]) {
+          currentBits[i] = !currentBits[i];
+        }
       }
     }
+    else if(gameMode == "easy") {
+      for(var i = 2; i < fourBitHotkeys.length; i++) {
+        if(key.toLowerCase() == fourBitHotkeys[i]) {
+          currentBits[i] = !currentBits[i];
+        }
+      }
+    }
+
+    
 
   }
   else if(windowState == "gameOver") {
