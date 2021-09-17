@@ -17,6 +17,10 @@ var mouseDown;
 
 var dimmed;
 
+var funMode;
+
+var numBits;
+
 // let paper;
 // let zcool;
 // function preload() {
@@ -32,7 +36,7 @@ function setup() {
   
   keys = "asdfjkl;";
   spacing = (width / 8);
-  state = "menu"; // menu, game, gameOver, reset, tutorial
+  state = "menu"; // menu, game, gameOver, reset, tutorial, hexTable
   initialize();
   // textFont(paper);
   // textFont(zcool);
@@ -42,13 +46,15 @@ function setup() {
 
 function initialize() {
   eightBits = [false,false,false,false,false,false,false,false];
-  currentHex = randomHexGenerator();
+  numBits = 2;
+  currentHex = generateHexBit(numBits);
   score = 0;
   health = 100;
   lossHealthRate = 0;
   scoreColor = "white";
   mouseDown = false;
   dimmed = false;
+  funMode = false;
 }
 
 
@@ -133,7 +139,8 @@ function runGame() {
 
   drawBits();
   
-  // if(!(currentHex.includes("B") && currentHex.includes("D"))) nextThing();
+  if(funMode)
+    if(!(currentHex.includes("B") || currentHex.includes("D"))) nextThing();
 
   // draw the hex
   fill("blue");
@@ -158,7 +165,7 @@ function runGame() {
 
   textSize(20);
   fill(255);
-  text("Highscore: 22", width - 75, spacing/3);
+  text("Highscore: 24", width - 75, spacing/3);
 }
 
 function drawBits() {
@@ -197,13 +204,19 @@ function drawHealth() {
   rect((width - len)/2, spacing*2, len*health/100, 15, 4)
 }
 
-function randomHexGenerator() {
-  var num = floor(random() * 255)+1;
-  // console.log(num);
-  // console.log(floor(num/16).toString(16).toUpperCase());
-  // console.log((num % 16).toString(16).toUpperCase());
-  var hex = floor(num/16).toString(16).toUpperCase() + (num % 16).toString(16).toUpperCase()
-  console.log(num);
+function generateHexBit(bits) {
+  var hex = "";
+  for (var i = 0; i < bits; i++) {
+    // var num = floor(random() * 255)+1;
+    var num = floor(random() * 15)+1;
+    // console.log(num);
+    // console.log(floor(num/16).toString(16).toUpperCase());
+    // console.log((num % 16).toString(16).toUpperCase());
+    // var hex = floor(num/16).toString(16).toUpperCase() + (num % 16).toString(16).toUpperCase()
+    hex += num.toString(16).toUpperCase();
+  }
+  
+  // console.log(hex);
   return hex;
   
 }
@@ -226,7 +239,7 @@ function check() {
 }
 
 function nextThing() {
-  currentHex = randomHexGenerator();
+  currentHex = generateHexBit(numBits);
   eightBits = [false,false,false,false,false,false,false,false];
   score += 1;
   health = 100;
