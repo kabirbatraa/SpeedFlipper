@@ -39,21 +39,33 @@ function drawTutorial() {
 
 function drawHexTable() {
   background(0);
-  button(width/2, height/6, 250, 50, "menu", "back to menu");
   fill(255);
+  textSize(40);
+  text("Hex Table", width/2, height/6);
 
+  button(width/2, 5*height/6, 250, 50, "menu", "back to menu");
+  fill(255);
   push();
   textAlign(LEFT,CENTER);
-  rectMode(CENTER);
+  // rectMode(CENTER);
   // rect(width/2, height/2, 3, 300);
   // rect(width/2, height/2, 400, 3);
-  textSize(15);
-  text('hex', width/2 - 2*spacing, height/4+10);
-  text('binary', width/2 + spacing, height/4+10);
+  textSize(20);
+  text('Hex', (width-20)*1/6, height/4);
+  text('Hex', (width-20)*4/6, height/4);
+  text('Binary', (width-20)*2/6, height/4);
+  text('Binary', (width-20)*5/6, height/4);
 
-  for(var i = 0; i < 16; i++) {
-    text(i.toString(16).toUpperCase(), width/2 - 2*spacing, height/4+10+(i+1)*20);
-    text(i.toString(2), width/2 + spacing, height/4+10+(i+1)*20);
+  let spaceDown = 28;
+  
+  textSize(15);
+  for(var i = 0; i < 8; i++) {
+    text(i.toString(16).toUpperCase(), (width-20)*1/6, height/4+10+(i+1)*spaceDown);
+    text(("000" + i.toString(2)).slice(-4), (width-20)*2/6, height/4+10+(i+1)*spaceDown);
+  }
+  for(var i = 8; i < 16; i++) {
+    text(i.toString(16).toUpperCase(), (width-20)*4/6, height/4+10+(i+1-8)*spaceDown);
+    text(i.toString(2), (width-20)*5/6, height/4+10+(i+1-8)*spaceDown);
   }
 
   // image(table, width/2, height/2);
@@ -80,8 +92,6 @@ function drawSettings() {
       gameMode = "normal";
     }
   }
-
-  
 
 }
 
