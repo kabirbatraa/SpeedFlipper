@@ -419,8 +419,8 @@ function keyPressed() {
 function checkForClick() {
   if(!mouseDown) return;
 
-  if(width < mobilePixels) {
-    // mobile buttons are different
+  if(width < mobilePixels && gameMode == "easy") {
+    // mobile buttons are different FOR EASY MODE
     if(mouseY > height-2*spacingX) {
       let pos = floor(map(mouseX, 0,width,0,4)) + 2;
       currentBits[pos] = !currentBits[pos];
