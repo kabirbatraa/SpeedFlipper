@@ -135,7 +135,6 @@ function runGame() {
 
   // draw the hex
   fill("blue");
-  console.log(Math.pow(spacingX, 0.7)*8);
   textSize(Math.pow(spacingX, 0.5)*15);
   textFont('Georgia');
   text(currentHex, width/2, height/2);
@@ -207,26 +206,35 @@ function drawEightBits() {
 function drawFourBits() {
   rectMode(CORNER);
   push()
+  var temp = spacingX;
+  var adjust = 0;
+  if(width < 480) {
+    //mobile want bits to be larger
+    temp = spacingX;
+    spacingX = spacingX*2
+    adjust = 2;
+
+  }
   for(var i = 2; i < 6; i++) {
     
     stroke("white");
     textSize(spacingX/4);
 
     fill(255);
-    text(labels[i+2][1], i * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
+    text(labels[i+2][1], (i-adjust) * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
     // rect(i * spacing+spacing/2,height - spacing+spacing/2-100,5,5);
 
     if(currentBits[i]) {
       fill(255);
-      rect(i * spacingX, height - spacingX, spacingX, spacingX, 20);
+      rect((i-adjust) * spacingX, height - spacingX, spacingX, spacingX, 20);
       fill(0);
-      text(fourBitHotkeys[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
+      text(fourBitHotkeys[i], (i-adjust) * spacingX+spacingX/2, height - spacingX+spacingX/2);
     } 
     else {
       fill(0);
-      rect(i * spacingX, height - spacingX, spacingX, spacingX, 20);
+      rect((i-adjust) * spacingX, height - spacingX, spacingX, spacingX, 20);
       fill(255);
-      text(fourBitHotkeys[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
+      text(fourBitHotkeys[i], (i-adjust) * spacingX+spacingX/2, height - spacingX+spacingX/2);
     }
     // if(currentBits[i]) {
     //   fill(255);
@@ -248,6 +256,8 @@ function drawFourBits() {
 
   textSize(spacingX/2);
   text(bits, width - spacingX, height - 2*spacingX);
+
+  spacingX = temp;
 
   // pop();
   // var bits = readFourBits();
@@ -340,7 +350,6 @@ function nextRound() {
     lossHealthRate += 0.01;
   }
   lossHealthRate = Number.parseFloat(lossHealthRate.toPrecision(6));
-  console.log(lossHealthRate);
 
 
 }
