@@ -18,11 +18,13 @@ var scoreColor;
 var spacingX;
 var spacingY;
 var dimmed;
+var mobilePixels;
 
 // constants
 var eightBitHotkeys;
 var fourBitHotkeys;
 var labels;
+
 
 function setup() {
   // createCanvas(500,500);
@@ -38,6 +40,7 @@ function setup() {
   labels = ["80","40","20","10","08","04","02","01"];
   spacingX = (width / 8);
   spacingY = (height / 8);
+  mobilePixels = 510;
 
   windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable, settings
   gameMode = "normal"; // normal, easy
@@ -208,7 +211,7 @@ function drawFourBits() {
   push()
   var temp = spacingX;
   var adjust = 0;
-  if(width < 480) {
+  if(width < mobilePixels) {
     //mobile want bits to be larger
     temp = spacingX;
     spacingX = spacingX*2
@@ -415,7 +418,19 @@ function keyPressed() {
 
 function checkForClick() {
   if(!mouseDown) return;
-  if(mouseY > height-spacingX) {
+
+  if(width < mobilePixels) {
+    // mobile buttons are different
+    if(mouseY > height-2*spacingX) {
+      let pos = floor(map(mouseX, 0,width,0,4)) + 2;
+      currentBits[pos] = !currentBits[pos];
+      mouseDown = false;
+      check();
+    }
+    
+  } 
+
+  else if(mouseY > height-spacingX) {
     let pos = floor(map(mouseX, 0,width,0,8));
     currentBits[pos] = !currentBits[pos];
     mouseDown = false;

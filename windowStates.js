@@ -1,13 +1,14 @@
 
 
 function drawMenu() {
+  console.log(width)
   background(0);
   fill(255);
   textSize(70);
-  if(width < 480) textSize(width/8);
+  if(width < mobilePixels) textSize(width/8);
   text("SpeedFlipper", width/2, height/3);
   textSize(25);
-  if(width < 480) textSize(width/8/2);
+  if(width < mobilePixels) textSize(width/8/2);
   text("by Kabir Batra", width/2, height/3 +50);
 
   button(width/2, 2*height/3, 120, 50, "game", "Start");
@@ -30,7 +31,7 @@ function drawTutorial() {
   textSize(50);
   text("Tutorial", width/2, height/6);
 
-  if(width < 420) textSize(width/24);
+  if(width < mobilePixels) textSize(width/24);
   else textSize(25);
   // textSize(20);
   
