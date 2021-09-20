@@ -119,6 +119,10 @@ function gameOver() {
   
   fill("red");
   textSize(60);
+  if(width < mobilePixels) {
+    textSize(spacingX);
+    console.log(spacingX);
+  }
   text("YOU LOSE", width/2, 4*height/9-10);
   text("Your score is " + score, width/2, 5*height/9-10);
 
