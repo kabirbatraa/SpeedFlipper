@@ -34,7 +34,7 @@ function setup() {
   labels = ["80","40","20","10","08","04","02","01"];
   spacing = (width / 8);
   windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable, settings
-  gameMode = "normal";
+  gameMode = "normal"; // normal, easy
   initialize();
 
   textFont('Trebuchet MS');
@@ -150,7 +150,13 @@ function runGame() {
 
   textSize(20);
   fill(255);
-  text("Highscore: 24", width - 75, spacing/3);
+  if(gameMode == "normal") {
+    text("Highscore: 24", width - 75, spacing/3);
+  }
+  else if(gameMode == "easy") {
+    text("Highscore: 71", width - 75, spacing/3);
+  }
+  
 }
 
 function drawEightBits() {
@@ -277,11 +283,32 @@ function nextRound() {
   currentBits = [false,false,false,false,false,false,false,false];
   score += 1;
   health = 100;
+
   if(lossHealthRate < 1) lossHealthRate += 0.05;
-  if(lossHealthRate >= 1) {
-    console.log("you are at max speed!")
-    scoreColor = "lightgreen";
+  else if(lossHealthRate >= 1.2) {
+    scoreColor = "#5555ff";
+    lossHealthRate += 0.001;
+    // 100 health / 1.2 health per frame = 83.33 frames
+    // 83 frames * 1 second per 60 frames = 1.389 seconds
+
   }
+  else if(lossHealthRate >= 1) { 
+    // occurs at a score of 20
+
+
+    // 60 frames per second
+    // -1 health per frame
+    // 100 health total
+    // 100 frames to die
+    // 100 frames * 1 second per 60 frames = 1.66 seconds
+
+    // console.log("you are at max speed!")
+    scoreColor = "lightgreen";
+    lossHealthRate += 0.01;
+  }
+  lossHealthRate = Number.parseFloat(lossHealthRate.toPrecision(6));
+  console.log(lossHealthRate);
+
 
 }
 
