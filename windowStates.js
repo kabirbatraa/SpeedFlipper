@@ -6,7 +6,7 @@ function drawMenu() {
   fill(255);
   textSize(70);
   if(width < mobilePixels) textSize(width/8);
-  text("SpeedFlipper", width/2, height/3);
+  text("Speedy Flipper", width/2, height/3);
   textSize(25);
   if(width < mobilePixels) textSize(width/8/2);
   text("by Kabir Batra", width/2, height/3 +50);
