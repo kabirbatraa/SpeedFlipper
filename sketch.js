@@ -43,7 +43,7 @@ function setup() {
   mobilePixels = 510;
 
   windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable, settings
-  gameMode = "normal"; // normal, easy
+  gameMode = "easy"; // normal, easy
   initialize();
 
   textFont('Trebuchet MS');

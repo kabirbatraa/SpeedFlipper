@@ -102,7 +102,7 @@ function drawSettings() {
     }
   }
   else if(gameMode == "easy") {
-    if (button(width/2, height/2, 300, 50, "settings", "Switch To Normal Mode")) {
+    if (button(width/2, height/2, 300, 50, "settings", "Switch To Hard Mode")) {
       gameMode = "normal";
     }
   }
