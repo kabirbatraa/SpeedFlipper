@@ -362,7 +362,7 @@ function getHighscore() {
     return 24;
   }
   else if (gameMode == "easy") {
-    return 71;
+    return 79;
   }
 }
 
