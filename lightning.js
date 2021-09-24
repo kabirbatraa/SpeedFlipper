@@ -32,9 +32,9 @@ function generateLightningPoints(start, end) {
 
 function drawLightning() {
   push();
-  stroke(255,180);
   strokeWeight(2);
   for(var i = 0; i < lightnings.length; i++) {
+    stroke(255,225 + random(-200,0));
     for (var j = 0; j < lightnings[0].length-1; j++) {
       line(lightnings[i][j].x,lightnings[i][j].y,lightnings[i][j+1].x,lightnings[i][j+1].y);
     }

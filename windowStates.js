@@ -5,10 +5,10 @@ function drawMenu() {
   background(0);
   fill(255);
   textSize(70);
-  if(width < mobilePixels) textSize(width/8);
+  if(mobileMode) textSize(width/8);
   text("Speedy Flipper", width/2, height/3);
   textSize(25);
-  if(width < mobilePixels) textSize(width/8/2);
+  if(mobileMode) textSize(width/8/2);
   text("by Kabir Batra", width/2, height/3 +50);
 
   button(width/2, 2*height/3, 120, 50, "game", "Start");
@@ -31,7 +31,7 @@ function drawTutorial() {
   textSize(50);
   text("Tutorial", width/2, height/6);
 
-  if(width < mobilePixels) textSize(width/24);
+  if(mobileMode) textSize(width/24);
   else textSize(25);
   // textSize(20);
   
@@ -97,7 +97,7 @@ function drawSettings() {
   textSize(20);
   if(gameMode == "normal") {
     // if (button(width/2, 2*height/3, 300, 50, "settings", "Switch To Easy Mode")) {
-  if (button(width/2, height/2, 300, 50, "settings", "Switch To Easy Mode")) {
+    if (button(width/2, height/2, 300, 50, "settings", "Switch To Easy Mode")) {
       gameMode = "easy";
     }
   }
@@ -124,7 +124,7 @@ function gameOver() {
   
   fill("red");
   textSize(60);
-  if(width < mobilePixels) {
+  if(mobileMode) {
     textSize(spacingX);
     console.log(spacingX);
   }

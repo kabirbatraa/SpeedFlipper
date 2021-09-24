@@ -33,12 +33,14 @@ var variance;
 var numPoints;
 var randomness;
 
-
+var mobileMode;
 
 function setup() {
   // createCanvas(500,500);
   // createCanvas(displayWidth,displayHeight);
   createCanvas(windowWidth,windowHeight);
+
+  
 
   noStroke();
   fill(0);
@@ -51,8 +53,10 @@ function setup() {
   spacingY = (height / 8);
   mobilePixels = 510;
 
+  mobileMode = width < mobilePixels;
+
   windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable, settings
-  gameMode = "easy"; // normal, easy
+  gameMode = mobileMode ? "easy" : "normal"; // normal, easy
   initialize();
 
   textFont('Trebuchet MS');
@@ -63,8 +67,8 @@ function setup() {
   }
 
   lightnings = [];
-  numLightnings = 5;
-  variance = 8;
+  numLightnings = 7;
+  variance = 5;
   numPoints = 20;
   randomness = 50;
   // for(var i = 0; i < 10; i++) {
@@ -219,7 +223,7 @@ function drawEightBits() {
 
     fill(255);
     // text(labels[i], i * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
-    if(!(width < mobilePixels))
+    if(!mobileMode)
       text(eightBitHotkeys[i], i * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
 
     if(currentBits[i]) {
@@ -250,7 +254,7 @@ function drawFourBits() {
   push()
   var temp = spacingX;
   var adjust = 0;
-  if(width < mobilePixels) {
+  if(mobileMode) {
     //mobile want bits to be larger
     temp = spacingX;
     spacingX = spacingX*2
@@ -264,7 +268,7 @@ function drawFourBits() {
 
     fill(255);
     // text(labels[i+2][1], (i-adjust) * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
-    if(!(width < mobilePixels))
+    if(!mobileMode)
       text(fourBitHotkeys[i], (i-adjust) * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
 
     if(currentBits[i]) {
@@ -295,7 +299,7 @@ function drawFourBits() {
 function placeLightningOnBits() {
   var start;
   var end;
-  if(gameMode == "easy" && width < mobilePixels) {
+  if(gameMode == "easy" && mobileMode) {
 
     var mobileSpacing = spacingX * 2;
     for(var i = 0; i < 4; i++) {
@@ -303,7 +307,8 @@ function placeLightningOnBits() {
       if (currentBits[i+2]) {
         for(var lightningi = 0; lightningi < numLightnings; lightningi++) {
           start = createVector(mobileSpacing * i + mobileSpacing/2, height - mobileSpacing/2);
-          end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
+          // end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
+          end = createVector(mobileSpacing * i + mobileSpacing/2 + random(-randomness*2,randomness*2), height - mobileSpacing*3/2 + random(-randomness,randomness));
           lightnings.push(generateLightningPoints(start, end));
   
         }
@@ -317,7 +322,8 @@ function placeLightningOnBits() {
       if (currentBits[i]) {
         for(var lightningi = 0; lightningi < numLightnings; lightningi++) {
           start = createVector(spacingX * i + spacingX/2, height - spacingX/2);
-          end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
+          // end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
+          end = createVector(spacingX * i + spacingX/2 + random(-randomness,randomness), height - spacingX*3/2 + random(-randomness,randomness));
           lightnings.push(generateLightningPoints(start, end));
   
         }
@@ -476,7 +482,7 @@ function keyPressed() {
 function checkForClick() {
   if(!mouseDown) return;
 
-  if(width < mobilePixels && gameMode == "easy") {
+  if(mobileMode && gameMode == "easy") {
     // mobile buttons are different FOR EASY MODE
     if(mouseY > height-2*spacingX) {
       let pos = floor(map(mouseX, 0,width,0,4)) + 2;
