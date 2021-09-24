@@ -113,6 +113,11 @@ function drawSettings() {
 
 function gameOver() {
   if(!dimmed) {
+    push();
+    for(var i = 0; i < rain.length; i++) {
+      rain[i].draw();
+    }
+    pop();
     background(0, 150);
   dimmed = true;
   }

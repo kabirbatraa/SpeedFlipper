@@ -25,6 +25,8 @@ var eightBitHotkeys;
 var fourBitHotkeys;
 var labels;
 
+// theme
+var rain;
 
 function setup() {
   // createCanvas(500,500);
@@ -48,6 +50,11 @@ function setup() {
 
   textFont('Trebuchet MS');
 
+  rain = [];
+  for(var i = 0; i < 400; i++) {
+    rain.push(new Rain());
+  }
+
 }
 
 function initialize() {
@@ -70,6 +77,8 @@ function initialize() {
 
 
 function draw() {
+  
+
   if (windowState == "menu") {
     drawMenu();
   }
@@ -97,6 +106,16 @@ function draw() {
   else if (windowState == "settings") {
     drawSettings();
   }
+
+  if(windowState != "gameOver") {
+    push();
+    for(var i = 0; i < rain.length; i++) {
+      rain[i].draw();
+      rain[i].update();
+    }
+    pop();
+  }
+  
 
 }
 
@@ -359,7 +378,7 @@ function nextRound() {
 
 function getHighscore() {
   if(gameMode == "normal") {
-    return 24;
+    return 25;
   }
   else if (gameMode == "easy") {
     return 79;
