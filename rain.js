@@ -11,7 +11,7 @@ class Rain {
     this.vel = createVector(random(-2,2),random(40,100));
     this.length = random(20,100);
     this.thick = random(1,5);
-    this.opacity = random(80,200);
+    this.opacity = random(80,150);
 
   }
 

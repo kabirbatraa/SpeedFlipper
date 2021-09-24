@@ -27,6 +27,12 @@ var labels;
 
 // theme
 var rain;
+var lightnings;
+var variance;
+var numPoints;
+var randomness;
+
+
 
 function setup() {
   // createCanvas(500,500);
@@ -54,6 +60,14 @@ function setup() {
   for(var i = 0; i < 400; i++) {
     rain.push(new Rain());
   }
+
+  lightnings = [];
+  variance = 10;
+  numPoints = 20;
+  randomness = 40;
+  // for(var i = 0; i < 10; i++) {
+  //   lightnings.push(generateLightningPoints(createVector(50,50), createVector(500 + random(-200,200),500 + random(-200,200))));
+  // }
 
 }
 
@@ -147,10 +161,19 @@ function runGame() {
   
   checkForClick();
 
-  if(gameMode == "normal")
+  placeLightningOnBits();
+  drawLightning();
+  lightnings = [];
+
+  if(gameMode == "normal") {
     drawEightBits();
-  else if(gameMode == "easy")
+  }
+  else if(gameMode == "easy") {
     drawFourBits();
+  }
+  
+  
+
   
   // if(gameMode == "funMode")
   //   if(!(currentHex.includes("B") || currentHex.includes("D"))) nextRound();
@@ -181,13 +204,6 @@ function runGame() {
   textSize(20);
   fill(255);
   text("Highscore: " + getHighscore(), width - 75, spacingY/3);
-
-  // if(gameMode == "normal") {
-  //   text("Highscore: 24", width - 75, spacingY/3);
-  // }
-  // else if(gameMode == "easy") {
-  //   text("Highscore: 71", width - 75, spacingY/3);
-  // }
   
 }
 
@@ -258,18 +274,6 @@ function drawFourBits() {
       fill(255);
       text(fourBitHotkeys[i], (i-adjust) * spacingX+spacingX/2, height - spacingX+spacingX/2);
     }
-    // if(currentBits[i]) {
-    //   fill(255);
-    //   rect(i * spacingX, height - spacingX, spacingX, spacingX, 20);
-    //   fill(0);
-    //   text(fourBitHotkeys[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
-    // } 
-    // else {
-    //   fill(0);
-    //   rect(i * spacingX, height - spacingX, spacingX, spacingX, 20);
-    //   fill(255);
-    //   text(fourBitHotkeys[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
-    // }
     
   }
   pop();
@@ -281,11 +285,40 @@ function drawFourBits() {
 
   spacingX = temp;
 
-  // pop();
-  // var bits = readFourBits();
-  // fill(255);
-  // textSize(50);
-  // text(bits, width - spacingX, height - 2*spacingX);
+}
+
+function placeLightningOnBits() {
+  var start;
+  var end;
+  if(gameMode == "easy" && width < mobilePixels) {
+
+    var mobileSpacing = spacingX * 2;
+    for(var i = 0; i < 4; i++) {
+  
+      if (currentBits[i+2]) {
+        for(var lightningi = 0; lightningi < 5; lightningi++) {
+          start = createVector(mobileSpacing * i + mobileSpacing/2, height - mobileSpacing/2);
+          end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
+          lightnings.push(generateLightningPoints(start, end));
+  
+        }
+      }
+    }
+  
+  }
+  else {
+    for(var i = 0; i < 8; i++) {
+    
+      if (currentBits[i]) {
+        for(var lightningi = 0; lightningi < 5; lightningi++) {
+          start = createVector(spacingX * i + spacingX/2, height - spacingX/2);
+          end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
+          lightnings.push(generateLightningPoints(start, end));
+  
+        }
+      }
+    }
+  }
 }
 
 function drawHealth() {
