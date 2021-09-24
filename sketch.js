@@ -28,6 +28,7 @@ var labels;
 // theme
 var rain;
 var lightnings;
+var numLightnings;
 var variance;
 var numPoints;
 var randomness;
@@ -45,7 +46,7 @@ function setup() {
   
   eightBitHotkeys = "asdfjkl;";
   fourBitHotkeys = "XXfghj";
-  labels = ["80","40","20","10","08","04","02","01"];
+  labels = ["80","40","20","10","08","04","02","01"]; // deprecate?
   spacingX = (width / 8);
   spacingY = (height / 8);
   mobilePixels = 510;
@@ -62,9 +63,10 @@ function setup() {
   }
 
   lightnings = [];
-  variance = 10;
+  numLightnings = 5;
+  variance = 8;
   numPoints = 20;
-  randomness = 40;
+  randomness = 50;
   // for(var i = 0; i < 10; i++) {
   //   lightnings.push(generateLightningPoints(createVector(50,50), createVector(500 + random(-200,200),500 + random(-200,200))));
   // }
@@ -216,20 +218,22 @@ function drawEightBits() {
     textSize(spacingX/4);
 
     fill(255);
-    text(labels[i], i * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
-    // rect(i * spacing+spacing/2,height - spacing+spacing/2-100,5,5);
+    // text(labels[i], i * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
+    if(!(width < mobilePixels))
+      text(eightBitHotkeys[i], i * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
 
     if(currentBits[i]) {
       fill(255);
       rect(i * spacingX, height - spacingX, spacingX, spacingX, 20);
       fill(0);
-      text(eightBitHotkeys[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
+      text(+currentBits[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
     } 
     else {
       fill(0);
       rect(i * spacingX, height - spacingX, spacingX, spacingX, 20);
       fill(255);
-      text(eightBitHotkeys[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
+      text(+currentBits[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
+      // text(eightBitHotkeys[i], i * spacingX+spacingX/2, height - spacingX+spacingX/2);
     }
     
   }
@@ -259,20 +263,21 @@ function drawFourBits() {
     textSize(spacingX/4);
 
     fill(255);
-    text(labels[i+2][1], (i-adjust) * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
-    // rect(i * spacing+spacing/2,height - spacing+spacing/2-100,5,5);
+    // text(labels[i+2][1], (i-adjust) * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
+    if(!(width < mobilePixels))
+      text(fourBitHotkeys[i], (i-adjust) * spacingX+spacingX/2, height - 2*spacingX+2*spacingX/3);
 
     if(currentBits[i]) {
       fill(255);
       rect((i-adjust) * spacingX, height - spacingX, spacingX, spacingX, 20);
       fill(0);
-      text(fourBitHotkeys[i], (i-adjust) * spacingX+spacingX/2, height - spacingX+spacingX/2);
+      text(+currentBits[i], (i-adjust) * spacingX+spacingX/2, height - spacingX+spacingX/2);
     } 
     else {
       fill(0);
       rect((i-adjust) * spacingX, height - spacingX, spacingX, spacingX, 20);
       fill(255);
-      text(fourBitHotkeys[i], (i-adjust) * spacingX+spacingX/2, height - spacingX+spacingX/2);
+      text(+currentBits[i], (i-adjust) * spacingX+spacingX/2, height - spacingX+spacingX/2);
     }
     
   }
@@ -296,7 +301,7 @@ function placeLightningOnBits() {
     for(var i = 0; i < 4; i++) {
   
       if (currentBits[i+2]) {
-        for(var lightningi = 0; lightningi < 5; lightningi++) {
+        for(var lightningi = 0; lightningi < numLightnings; lightningi++) {
           start = createVector(mobileSpacing * i + mobileSpacing/2, height - mobileSpacing/2);
           end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
           lightnings.push(generateLightningPoints(start, end));
@@ -310,7 +315,7 @@ function placeLightningOnBits() {
     for(var i = 0; i < 8; i++) {
     
       if (currentBits[i]) {
-        for(var lightningi = 0; lightningi < 5; lightningi++) {
+        for(var lightningi = 0; lightningi < numLightnings; lightningi++) {
           start = createVector(spacingX * i + spacingX/2, height - spacingX/2);
           end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
           lightnings.push(generateLightningPoints(start, end));
