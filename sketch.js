@@ -422,7 +422,7 @@ function nextRound() {
 
 function getHighscore() {
   if(gameMode == "normal") {
-    return 25;
+    return 27;
   }
   else if (gameMode == "easy") {
     return 79;
