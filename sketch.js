@@ -75,7 +75,7 @@ function setup() {
   // for(var i = 0; i < 10; i++) {
   //   lightnings.push(generateLightningPoints(createVector(50,50), createVector(500 + random(-200,200),500 + random(-200,200))));
   // }
-  killerLightningFrames = 10;
+  killerLightningFrames = 5;
 
   textFont('Trebuchet MS');
 

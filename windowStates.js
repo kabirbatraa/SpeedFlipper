@@ -1,7 +1,6 @@
 
 
 function drawMenu() {
-  console.log(width)
   background(0);
   fill(255);
   textSize(70);

@@ -49,9 +49,10 @@ function drawKillerLightnings() {
   strokeWeight(2);
   for(var i = 0; i < killerLightnings.length; i++) {
     stroke(255,225 + random(-200,0));
-    for (var j = 0; j < killerLightnings[0].length-1; j++) {
+    for (var j = 0; j < (killerLightnings[0].length) * (1 - killerLightningTimer/killerLightningFrames) - 1; j++) {
       line(killerLightnings[i][j].x,killerLightnings[i][j].y,killerLightnings[i][j+1].x,killerLightnings[i][j+1].y);
     }
+    // console.log(killerLightningTimer / killerLightningFrames);
 
   }
   pop();
