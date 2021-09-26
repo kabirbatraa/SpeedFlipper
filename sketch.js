@@ -31,7 +31,11 @@ var lightnings;
 var numLightnings;
 var variance;
 var numPoints;
-var randomness;
+var flowerRandomness;
+var killerRandomness;
+var killerLightnings;
+var killerLightningTimer;
+var killerLightningFrames;
 
 var mobileMode;
 
@@ -57,23 +61,26 @@ function setup() {
 
   windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable, settings
   gameMode = mobileMode ? "easy" : "normal"; // normal, easy
-  initialize();
-
-  textFont('Trebuchet MS');
 
   rain = [];
   for(var i = 0; i < 400; i++) {
     rain.push(new Rain());
   }
 
-  lightnings = [];
   numLightnings = 7;
   variance = 5;
   numPoints = 20;
-  randomness = 50;
+  flowerRandomness = 50;
+  killerRandomness = 40;
   // for(var i = 0; i < 10; i++) {
   //   lightnings.push(generateLightningPoints(createVector(50,50), createVector(500 + random(-200,200),500 + random(-200,200))));
   // }
+  killerLightningFrames = 10;
+
+  textFont('Trebuchet MS');
+
+
+  initialize();
 
 }
 
@@ -93,6 +100,11 @@ function initialize() {
   scoreColor = "white";
   mouseDown = false;
   dimmed = false;
+
+  lightnings = [];
+  killerLightnings = [];
+  killerLightningTimer = killerLightningFrames;
+
 }
 
 
@@ -167,9 +179,22 @@ function runGame() {
   
   checkForClick();
 
-  placeLightningOnBits();
+  placeLightningOnBits("flower");
+  // placeLightningOnBits("killer");
   drawLightning();
+  drawKillerLightnings();
+  // killerLightnings = [];
   lightnings = [];
+  if(killerLightnings.length != 0) {
+    // var numToGenerate = killerLightnings.length; 
+    if(killerLightningTimer > 0) {
+      killerLightningTimer--;
+    } 
+    else {
+      killerLightnings = [];
+      killerLightningTimer = killerLightningFrames;
+    }
+  }
 
   if(gameMode == "normal") {
     drawEightBits();
@@ -296,7 +321,8 @@ function drawFourBits() {
 
 }
 
-function placeLightningOnBits() {
+function placeLightningOnBits(lightningType) {
+  // lightningType is either "flower" or "killer"
   var start;
   var end;
   if(gameMode == "easy" && mobileMode) {
@@ -308,9 +334,14 @@ function placeLightningOnBits() {
         for(var lightningi = 0; lightningi < numLightnings; lightningi++) {
           start = createVector(mobileSpacing * i + mobileSpacing/2, height - mobileSpacing/2);
           // end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
-          end = createVector(mobileSpacing * i + mobileSpacing/2 + random(-randomness*2,randomness*2), height - mobileSpacing*3/2 + random(-randomness,randomness));
-          lightnings.push(generateLightningPoints(start, end));
-  
+          if(lightningType == "flower") {
+            end = createVector(mobileSpacing * i + mobileSpacing/2 + random(-flowerRandomness*2,flowerRandomness*2), height - mobileSpacing*3/2 + random(-flowerRandomness,flowerRandomness));
+            lightnings.push(generateLightningPoints(start, end));
+          }
+          else if(lightningType == "killer") {
+            end = createVector(width/2 + random(-killerRandomness,killerRandomness), height/2 + random(-killerRandomness,killerRandomness));
+            killerLightnings.push(generateLightningPoints(start, end));
+          }
         }
       }
     }
@@ -323,9 +354,15 @@ function placeLightningOnBits() {
         for(var lightningi = 0; lightningi < numLightnings; lightningi++) {
           start = createVector(spacingX * i + spacingX/2, height - spacingX/2);
           // end = createVector(width/2 + random(-randomness,randomness), height/2 + random(-randomness,randomness));
-          end = createVector(spacingX * i + spacingX/2 + random(-randomness,randomness), height - spacingX*3/2 + random(-randomness,randomness));
-          lightnings.push(generateLightningPoints(start, end));
-  
+          if(lightningType == "flower") {
+            end = createVector(spacingX * i + spacingX/2 + random(-flowerRandomness,flowerRandomness), height - spacingX*3/2 + random(-flowerRandomness,flowerRandomness));
+            lightnings.push(generateLightningPoints(start, end));
+          }
+          else if(lightningType == "killer") {
+            end = createVector(width/2 + random(-killerRandomness,killerRandomness), height/2 + random(-killerRandomness,killerRandomness));
+            killerLightnings.push(generateLightningPoints(start, end));
+          }
+
         }
       }
     }
@@ -388,6 +425,9 @@ function check() {
 }
 
 function nextRound() {
+
+  placeLightningOnBits("killer");
+
   currentHex = generateHexBit(numBits);
   currentBits = [false,false,false,false,false,false,false,false];
   score += 1;
