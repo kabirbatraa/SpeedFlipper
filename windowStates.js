@@ -15,8 +15,10 @@ function drawMenu() {
   button(width/2, 2*height/3+60, 120, 50, "tutorial", "Tutorial");
   button(width/2, 2*height/3+60+60, 120, 50, "hexTable", "Hex Table");
 
-  // button(width - spacingX, spacingX, 100, 50, "settings","Settings")
-  button(width - 50-20, 25+20, 100, 50, "settings","Settings")
+  // button(width - spacingX, spacingX, 100, 50, "settings","Settings");
+  // buttonWithImage(width - 50-20, 25+20, 100, 50, "settings","Settings");
+  buttonWithImage(width - 50-20, 25+20, 50, 50, "settings","Settings", settingsIcon);
+
 }
 
 

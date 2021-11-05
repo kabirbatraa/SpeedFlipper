@@ -39,12 +39,15 @@ var killerLightningFrames;
 
 var mobileMode;
 
+let settingsIcon;
+function preload() {
+  settingsIcon = loadImage('assets/settingsIcon.png');
+}
+
 function setup() {
   // createCanvas(500,500);
   // createCanvas(displayWidth,displayHeight);
   createCanvas(windowWidth,windowHeight);
-
-  
 
   noStroke();
   fill(0);
@@ -109,7 +112,8 @@ function initialize() {
 
 
 function draw() {
-  
+
+  // image(settingsIcon, 0, 0, 10, 10);
 
   if (windowState == "menu") {
     drawMenu();
@@ -149,29 +153,6 @@ function draw() {
   }
   
 
-}
-
-function button(x, y, w, h, newState, words) {
-  fill(255);
-  if(mouseIsIn(x, y, w, h)) {
-    fill(150);
-    if(mouseDown) {
-      windowState = newState;
-      mouseDown = false;
-      if(newState == "menu") initialize();
-      return true;
-    }
-    
-  }
-  push();
-  rectMode(CENTER);
-  rect(x, y, w, h, 20);
-  pop();
-
-  fill(0);
-  textSize(25);
-  text(words,x, y);
-  return false;
 }
 
 function runGame() {
