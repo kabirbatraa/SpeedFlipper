@@ -63,7 +63,7 @@ function setup() {
   gameMode = mobileMode ? "easy" : "normal"; // normal, easy
 
   rain = [];
-  for(var i = 0; i < 400; i++) {
+  for(var i = 0; i < 200; i++) {
     rain.push(new Rain());
   }
 
