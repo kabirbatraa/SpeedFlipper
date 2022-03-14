@@ -63,7 +63,8 @@ function setup() {
   mobileMode = width < mobilePixels;
 
   windowState = "menu"; // menu, game, gameOver, reset, tutorial, hexTable, settings
-  gameMode = mobileMode ? "easy" : "normal"; // normal, easy
+  // gameMode = mobileMode ? "easy" : "normal"; // normal, easy
+  gameMode = "easy"; // normal, easy
 
   rain = [];
   for(var i = 0; i < 200; i++) {
