@@ -505,6 +505,9 @@ function checkForClick() {
   if(!mouseDown) return;
 
   if (mobileMode) {
+    if (windowState == "game") {
+      return;
+    }
 
     for (var i = 0; i < touches.length; i++) {
       // console.log(touches[i].x, touches[i].y);
@@ -580,3 +583,40 @@ function mouseReleased() {
 //     console.log(touches[i].x, touches[i].y);
 //   }
 // }
+
+function touchStarted() {
+  // for (var i = 0; i < touches.length; i++) {
+  //   console.log(touches[i].x, touches[i].y);
+  // }
+
+  mouseDown = true;
+  
+  if (windowState != "game") {
+    return;
+  }
+  for (var i = 0; i < touches.length; i++) {
+    // console.log(touches[i].x, touches[i].y);
+    let touchX = touches[i].x;
+    let touchY = touches[i].y;
+    
+    if (gameMode == "normal") {
+      let pos = floor(map(touchX, 0,width,0,8));
+      currentBits[pos] = !currentBits[pos];
+      // mouseDown = false;
+      check();
+    }
+    if (gameMode == "easy") {
+      if(touchY > height-2*spacingX) {
+        let pos = floor(map(touchX, 0,width,0,4)) + 2;
+        currentBits[pos] = !currentBits[pos];
+        // mouseDown = false;
+        check();
+      }
+    }
+
+  }
+}
+
+function touchEnded() {
+  mouseDown = false;
+}
