@@ -506,24 +506,29 @@ function checkForClick() {
 
   if (mobileMode) {
 
-    // for (var i = 0; i < touches.length; i++) {
-    //   console.log(touches[i].x, touches[i].y);
-    // }
-
-    if (gameMode == "normal") {
-      let pos = floor(map(mouseX, 0,width,0,8));
-      currentBits[pos] = !currentBits[pos];
-      mouseDown = false;
-      check();
-    }
-    if (gameMode == "easy") {
-      if(mouseY > height-2*spacingX) {
-        let pos = floor(map(mouseX, 0,width,0,4)) + 2;
+    for (var i = 0; i < touches.length; i++) {
+      // console.log(touches[i].x, touches[i].y);
+      let touchX = touches[i].x;
+      let touchY = touches[i].y;
+      
+      if (gameMode == "normal") {
+        let pos = floor(map(touchX, 0,width,0,8));
         currentBits[pos] = !currentBits[pos];
         mouseDown = false;
         check();
       }
+      if (gameMode == "easy") {
+        if(touchY > height-2*spacingX) {
+          let pos = floor(map(touchX, 0,width,0,4)) + 2;
+          currentBits[pos] = !currentBits[pos];
+          mouseDown = false;
+          check();
+        }
+      }
+
     }
+
+    
   }
   // desktop mode
   else {
