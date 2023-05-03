@@ -8,10 +8,10 @@ class Rain {
 
   reset() {
     this.pos = createVector(random(width),random(-1000,0));
-    this.vel = createVector(random(-2,2),random(40,100));
-    this.length = random(20,100);
-    this.thick = random(1,5);
-    this.opacity = random(20,100);
+    this.vel = createVector(random(-1,1),random(20,30));
+    this.length = random(20,40);
+    this.thick = random(1,2);
+    this.opacity = random(20,200);
 
   }
 
