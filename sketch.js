@@ -504,23 +504,62 @@ function keyPressed() {
 function checkForClick() {
   if(!mouseDown) return;
 
-  if(mobileMode && gameMode == "easy") {
-    // mobile buttons are different FOR EASY MODE
-    if(mouseY > height-2*spacingX) {
-      let pos = floor(map(mouseX, 0,width,0,4)) + 2;
+  if (mobileMode) {
+
+    // for (var i = 0; i < touches.length; i++) {
+    //   console.log(touches[i].x, touches[i].y);
+    // }
+
+    if (gameMode == "normal") {
+      let pos = floor(map(mouseX, 0,width,0,8));
       currentBits[pos] = !currentBits[pos];
       mouseDown = false;
       check();
     }
-    
-  } 
-
-  else if(mouseY > height-spacingX) {
-    let pos = floor(map(mouseX, 0,width,0,8));
-    currentBits[pos] = !currentBits[pos];
-    mouseDown = false;
-    check();
+    if (gameMode == "easy") {
+      if(mouseY > height-2*spacingX) {
+        let pos = floor(map(mouseX, 0,width,0,4)) + 2;
+        currentBits[pos] = !currentBits[pos];
+        mouseDown = false;
+        check();
+      }
+    }
   }
+  // desktop mode
+  else {
+    if (gameMode == "normal") {
+      let pos = floor(map(mouseX, 0,width,0,8));
+      currentBits[pos] = !currentBits[pos];
+      mouseDown = false;
+      check();
+    }
+    if (gameMode == "easy") {
+      let pos = floor(map(mouseX, 0,width,0,8));
+      // only flip bit if pos is between 2 and 5
+      if (2 <= pos && pos <= 5)
+        currentBits[pos] = !currentBits[pos];
+      mouseDown = false;
+      check();
+    }
+  }
+
+  // if(mobileMode && gameMode == "easy") {
+  //   // mobile buttons are different FOR EASY MODE
+  //   if(mouseY > height-2*spacingX) {
+  //     let pos = floor(map(mouseX, 0,width,0,4)) + 2;
+  //     currentBits[pos] = !currentBits[pos];
+  //     mouseDown = false;
+  //     check();
+  //   }
+    
+  // } 
+
+  // else if(mouseY > height-spacingX) {
+  //   let pos = floor(map(mouseX, 0,width,0,8));
+  //   currentBits[pos] = !currentBits[pos];
+  //   mouseDown = false;
+  //   check();
+  // }
 }
 
 function mousePressed() {
@@ -530,3 +569,9 @@ function mousePressed() {
 function mouseReleased() {
   mouseDown = false;
 }
+
+// function touchStarted() {
+//   for (var i = 0; i < touches.length; i++) {
+//     console.log(touches[i].x, touches[i].y);
+//   }
+// }
