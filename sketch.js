@@ -627,7 +627,8 @@ function touchStarted() {
   if (windowState != "game") {
     return;
   }
-  for (var i = 0; i < touches.length; i++) {
+  var i = touches.length - 1;
+  // for (var i = 0; i < touches.length; i++) {
     // console.log(i)
     debugText += i;
     // console.log(touches[i].x, touches[i].y);
@@ -655,7 +656,7 @@ function touchStarted() {
 
       }
     }
-  }
+  // }
   check();
 }
 
