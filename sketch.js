@@ -160,11 +160,11 @@ function draw() {
   
 
   // draw debug text in center of screen
-  push();
-  fill(255);
-  textSize(20);
-  text(debugText, width/2, height/2);
-  pop();
+  // push();
+  // fill(255);
+  // textSize(20);
+  // text(debugText, width/2, height/2);
+  // pop();
 
 }
 
