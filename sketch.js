@@ -465,11 +465,20 @@ function getHighscore() {
 
 // assuming centered
 function mouseIsIn(x,y,w,h) {
-  return (x - w/2) <= mouseX && mouseX <= (x + w/2) && y - h/2 <= mouseY && mouseY <= y + h/2;
+  // console.log(mobileMode);
+  if (!mobileMode) {
+    return (x - w/2) <= mouseX && mouseX <= (x + w/2) && y - h/2 <= mouseY && mouseY <= y + h/2;
+  }
+  for (let i = 0; i < touches.length; i++) {
+    if (x - w/2 <= touches[i].x && touches[i].x <= x + w/2 && y - h/2 <= touches[i].y && touches[i].y <= y + h/2) {
+      return true;
+    }
+  }
 }
 
 
 function keyPressed() {
+  // debugText += "?";
   if(windowState == "game") {
 
     if(gameMode == "normal") {
@@ -538,6 +547,8 @@ function checkForClick() {
           currentBits[pos] = !currentBits[pos];
           mouseDown = false;
           check();
+          debugText += "flip2";
+
         }
       }
 
@@ -560,6 +571,8 @@ function checkForClick() {
         currentBits[pos] = !currentBits[pos];
       mouseDown = false;
       check();
+      debugText += "flip2";
+
     }
   }
 
@@ -597,9 +610,16 @@ function mouseReleased() {
 // }
 
 function touchStarted() {
+
+  debugText = "";
+  
   for (var i = 0; i < touches.length; i++) {
     console.log(touches[i].x, touches[i].y);
-    text(touches[i].x, touches[i].x, touches[i].y);
+    // text(touches[i].x, touches[i].x, touches[i].y);
+    // debugText = "(" + touches[i].x + ", " + touches[i].y + ")";
+
+    // for every touch, add the x y rounded to 2 decimal places to the debug text
+    // debugText += "(" + Number.parseFloat(touches[i].x).toPrecision(4) + ", " + Number.parseFloat(touches[i].y).toPrecision(4) + ") ";
   }
 
   mouseDown = true;
@@ -608,6 +628,8 @@ function touchStarted() {
     return;
   }
   for (var i = 0; i < touches.length; i++) {
+    // console.log(i)
+    debugText += i;
     // console.log(touches[i].x, touches[i].y);
     let touchX = touches[i].x;
     let touchY = touches[i].y;
@@ -616,20 +638,28 @@ function touchStarted() {
       let pos = floor(map(touchX, 0,width,0,8));
       currentBits[pos] = !currentBits[pos];
       // mouseDown = false;
-      check();
     }
     if (gameMode == "easy") {
       if(touchY > height-2*spacingX) {
         let pos = floor(map(touchX, 0,width,0,4)) + 2;
         currentBits[pos] = !currentBits[pos];
         // mouseDown = false;
-        check();
+        // debugText += "flip1";
+        // debugText += "pos: " + pos + " ";
+        // debugText += currentBits;
+        debugText += ": "
+        for (var j = 2; j < currentBits.length-2; j++) {
+          debugText += currentBits[j] ? "1" : "0";
+        }
+        debugText += " "
+
       }
     }
-
   }
+  check();
 }
 
 function touchEnded() {
-  mouseDown = false;
+  if (touches.length == 0)
+    mouseDown = false;
 }
