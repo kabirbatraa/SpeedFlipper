@@ -39,12 +39,15 @@ var killerLightningFrames;
 
 var mobileMode;
 
+let debugText;
+
 let settingsIcon;
 function preload() {
   settingsIcon = loadImage('assets/settingsIcon.png');
 }
 
 function setup() {
+  debugText = "debug text";
   // createCanvas(500,500);
   // createCanvas(displayWidth,displayHeight);
   createCanvas(windowWidth,windowHeight);
@@ -114,6 +117,8 @@ function initialize() {
 
 function draw() {
 
+  
+
   // image(settingsIcon, 0, 0, 10, 10);
 
   if (windowState == "menu") {
@@ -153,6 +158,13 @@ function draw() {
     pop();
   }
   
+
+  // draw debug text in center of screen
+  push();
+  fill(255);
+  textSize(20);
+  text(debugText, width/2, height/2);
+  pop();
 
 }
 
@@ -585,9 +597,10 @@ function mouseReleased() {
 // }
 
 function touchStarted() {
-  // for (var i = 0; i < touches.length; i++) {
-  //   console.log(touches[i].x, touches[i].y);
-  // }
+  for (var i = 0; i < touches.length; i++) {
+    console.log(touches[i].x, touches[i].y);
+    text(touches[i].x, touches[i].x, touches[i].y);
+  }
 
   mouseDown = true;
   
