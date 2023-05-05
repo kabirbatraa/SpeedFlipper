@@ -74,7 +74,8 @@ function setup() {
     rain.push(new Rain());
   }
 
-  numLightnings = 7;
+  // numLightnings = mobileMode ? 2 : 7;
+  numLightnings = 2;
   variance = 5;
   numPoints = 20;
   flowerRandomness = 50;
